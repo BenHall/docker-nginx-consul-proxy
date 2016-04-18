@@ -1,0 +1,11 @@
+FROM ubuntu
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get update -qq && \
+    apt-get -y install unzip curl vim && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -L https://releases.hashicorp.com/consul-template/0.14.0/consul-template_0.14.0_linux_amd64.zip -o consul-template.zip && \
+      unzip consul-template.zip -d /usr/local/bin 
+
+CMD ['bash']
