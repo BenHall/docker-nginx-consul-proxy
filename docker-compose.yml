@@ -4,11 +4,12 @@ app:
     SERVICE_80_NAME: http
     SERVICE_NAME: app
     SERVICE_TAGS: production
-  ports:
+  ports: 
     - "80"
 
 lb:
   build: ./
+  restart: always
   links:
   - consul
   ports:
@@ -17,6 +18,7 @@ lb:
 consul:
   command: -bootstrap -advertise 192.168.99.100
   image: gliderlabs/consul-server:latest
+  restart: always
   ports:
   - "8300:8300"
   - "8400:8400"
@@ -24,9 +26,11 @@ consul:
   - "8600:53/udp"
 
 registrator:
-  command: -internal consul://localhost:8500
+  # command: -internal consul://localhost:8500
+  command: -ip 192.168.99.100 consul://localhost:8500
   image: gliderlabs/registrator:latest
   net: host
+  restart: always
   #links:
   #    - consul:consul
   volumes:
